@@ -2,7 +2,7 @@ abstract type AbstractMetropolisHastings <: AbstractSampler end
 abstract type MetropolisHastingsParams <: SamplerParameters end
 
 include("distributions.jl")
-export QuantumRotorOBCDistribution, sample, log_prob
+export AbstractDistribution, QuantumRotorOBCDistribution, sample, log_prob
 
 
 Base.@kwdef mutable struct MetropolisHastings{D <: AbstractDistribution} <: MetropolisHastingsParams

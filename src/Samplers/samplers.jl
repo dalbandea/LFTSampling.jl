@@ -60,7 +60,7 @@ include("HMC/hmctypes.jl")
 export AbstractHMC, HMCParams, HMC, RHMC
 
 include("HMC/hmc.jl")
-export hmc!
+export hmc!, action
 
 sampler(lftws::AbstractLFT, hmcp::HMCParams) = FallbackHMC(hmcp)
 sample!(lftws::AbstractLFT, samplerws::AbstractHMC) = hmc!(lftws, samplerws)
@@ -72,7 +72,7 @@ sample!(lftws::AbstractLFT, samplerws::AbstractHMC) = hmc!(lftws, samplerws)
 ##############
 
 include("Metropolis/metropolistypes.jl")
-export Metropolis
+export AbstractMetropolis, MetropolisParams, Metropolis
 
 include("Metropolis/metropolis.jl")
 export sweep!
@@ -95,7 +95,7 @@ acceptance(samplerws::AbstractMetropolis) = samplerws.params.naccepted / sampler
 #######################
 
 include("MetropolisHastings/metropolishastingstypes.jl")
-export MetropolisHastings
+export AbstractMetropolisHastings, MetropolisHastingsParams, MetropolisHastings
 
 include("MetropolisHastings/metropolishastings.jl")
 export mhastings!
