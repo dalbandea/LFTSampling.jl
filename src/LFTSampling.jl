@@ -15,4 +15,6 @@ export CG, invert!, cg!
 
 include("Logs/logs.jl")
 
+include("Tests/hmctests.jl")
+
 end # module
