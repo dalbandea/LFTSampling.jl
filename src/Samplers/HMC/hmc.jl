@@ -23,7 +23,9 @@ function update_fields!(lftws::AbstractLFT, epsilon, hmcws::AbstractHMC)
 end
 
 ## Optional
-function generate_pseudofermions!(lftws::AbstractLFT, hmcws::AbstractHMC) end
+function generate_pseudofermions!(lftws::AbstractLFT, hmcws::AbstractHMC) 
+    @debug "No function generate_pseudofermions! for $(typeof(lftws))"
+end
 
 molecular_dynamics!(lftws::AbstractLFT, hmcws::AbstractHMC) =
                         molecular_dynamics!(lftws, hmcws, hmcws.params.integrator)
@@ -64,9 +66,9 @@ function leapfrog!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
 	# First half-step for momenta
     update_momenta!(lftws, epsilon/2.0, hmcws)
 
-    ns = round(Int64, rand(Distributions.Exponential(nns)))
+    # ns = round(Int64, rand(Distributions.Exponential(nns)))
     # ns = rand(1:nns)
-    # ns = nns
+    ns = nns
 
 	# ns-1 steps
 	for i in 1:(ns-1) 
