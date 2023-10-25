@@ -2,6 +2,7 @@ module LFTSampling
 
 import Random, Git
 import Distributions
+import LinearAlgebra
 
 abstract type AbstractLFT end
 abstract type LFTParm end

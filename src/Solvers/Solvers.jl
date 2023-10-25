@@ -37,7 +37,7 @@ function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
 	    iterations = 0
     for i in 1:solver.maxiter
         A(Ap, tmp, p, lftws)
-        prod  = dot(p, Ap)
+        prod  = LinearAlgebra.dot(p, Ap)
         alpha = norm/prod
 
         so .= so .+ alpha .*  p
