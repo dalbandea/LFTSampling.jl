@@ -23,6 +23,15 @@ function reversibility!(lftws::AbstractLFT, hmcws::AbstractHMC)
 end
 
 
+"""
+    function force_test(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon)
+
+Computes the average numerical force of a configuration and compares it with the
+analytical one. To use this function one needs to define the functions
+- analytic_force
+- get_field
+- flip_momenta_sign!
+"""
 function force_test(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon)
     lftws2 = deepcopy(lftws)
 
