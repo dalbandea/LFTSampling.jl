@@ -1,6 +1,6 @@
 module LFTSampling
 
-import Random, Git
+import Random, Git, BDIO
 import Distributions
 import LinearAlgebra
 
@@ -16,5 +16,8 @@ export CG, invert!, cg!
 include("Logs/logs.jl")
 
 include("Tests/hmctests.jl")
+
+include("IO/lftio.jl")
+export read_next_cnfg, save_cnfg, save_cnfg_header
 
 end # module
