@@ -63,16 +63,30 @@ function save_cnfg(fname::String, lftws::AbstractLFT)
 end
 
 
-function read_ensemble(fname::String, LFT::Type{L}) where L <: AbstractLFT
+"""
+    read_ensemble(fname::String, LFT::Type{L}, n::Int64 = 0) where L <: AbstractLFT
+
+Returns ensemble stored in path `fname`, using the constructor of type `LFT`. If
+`n>0` is provided, returns only first `n` configurations of the ensemble.
+"""
+function read_ensemble(fname::String, LFT::Type{L}, n::Int64 = 0) where L <: AbstractLFT
+    error("read_ensemble is not passing tests currently and should not be used yet")
     fb = BDIO.BDIO_open(fname, "r")
 
     fb, model = read_cnfg_info(fname, LFT)
 
     nc = count_configs(fname)
+    if n > 0
+        n < nc || error("Number of configurations to read, $n, is bigger that
+                        number of configurations in file, $nc")
+        nc = n
+    end
+
     ens = [deepcopy(model) for i in 1:nc]
 
     for i in 1:nc
         read_next_cnfg(fb, ens[i])
+        print("Reading configuration $i / $nc\r")
     end
 
     BDIO.BDIO_close!(fb)
