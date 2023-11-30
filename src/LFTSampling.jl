@@ -11,7 +11,7 @@ export AbstractLFT, LFTParm
 include("Samplers/samplers.jl")
 
 include("Solvers/Solvers.jl")
-export CG, invert!, cg!
+export CG, invert!, cg!, BiCGSTAB, bicgstab!
 
 include("Logs/logs.jl")
 
