@@ -18,6 +18,6 @@ include("Logs/logs.jl")
 include("Tests/hmctests.jl")
 
 include("IO/lftio.jl")
-export read_next_cnfg, save_cnfg, save_cnfg_header
+export read_next_cnfg, save_cnfg, save_cnfg_header, save_ensemble, read_ensemble
 
 end # module

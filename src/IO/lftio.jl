@@ -63,6 +63,48 @@ function save_cnfg(fname::String, lftws::AbstractLFT)
     BDIO.BDIO_close!(fb)
 end
 
+"""
+    save_ensemble(fname::String, vlftws::Vector{AbstractLFT})
+
+saves vector of model instances `vlftws` to BDIO file `fname`. If file does not
+exist, it creates one and stores the info in `vlftws[1].params`, and then saves
+the configurations. If it does exist, it appends the configurations in the
+vector to the existing file.
+"""
+function save_ensemble(fname::String, vlftws::Vector{LFT}) where LFT <: AbstractLFT
+
+    fb = create_header_maybe(fname, vlftws[1])
+
+    for i in 1:length(vlftws)
+        print("Saving configuration $i / $(length(vlftws))\r")
+        BDIO.BDIO_start_record!(fb, BDIO.BDIO_BIN_F64LE, 8, true)
+        BDIO.BDIO_write!(fb,vlftws[i])
+        BDIO.BDIO_write_hash!(fb)
+    end
+
+    BDIO.BDIO_close!(fb)
+end
+
+
+"""
+    create_header_maybe(fname::String, lftws::AbstractLFT)
+
+returns BDIO file handle `fb` of file `fname`. If file `fname` already exists,
+the function opens it in append mode. If it does not exist, it creates it in
+write mode and stores the info in `lftws.params`.
+"""
+function create_header_maybe(fname::String, lftws::AbstractLFT)
+    if isfile(fname)
+        fb = BDIO.BDIO_open(fname, "a")
+    else
+        fb = BDIO.BDIO_open(fname, "w", "$(supertype(typeof(lftws))) Configurations")
+        BDIO.BDIO_start_record!(fb, BDIO.BDIO_BIN_GENERIC, 1)
+        save_cnfg_header(fb, lftws)
+        BDIO.BDIO_write_hash!(fb)
+    end
+    return fb
+end
+
 
 """
     read_ensemble(fname::String, LFT::Type{L}, n::Int64 = 0) where L <: AbstractLFT
