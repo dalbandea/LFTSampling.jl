@@ -53,7 +53,7 @@ function force_test(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon)
         F_num = (Sf - Si)/epsilon
 
         # Difference
-        F_diff += F_ana[i] + F_num
+        F_diff += abs(F_ana[i] + F_num)
 
         fld[i] = infinitesimal_transformation(fld[i], -epsilon, lftws2)
     end
