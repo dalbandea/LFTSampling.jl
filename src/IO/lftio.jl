@@ -112,10 +112,14 @@ end
 Returns ensemble stored in path `fname`, using the constructor of type `LFT`. If
 `n>0` is provided, returns only first `n` configurations of the ensemble.
 """
-function read_ensemble(fname::String, LFT::Type{L}, n::Int64 = 0) where L <: AbstractLFT
+function read_ensemble(fname::String, LFT::Type{L}, n::Int64 = 0; modul::Union{Module, Nothing} = nothing) where L <: AbstractLFT
     nc = count_configs(fname)
 
-    fb, model = read_cnfg_info(fname, LFT)
+    if modul == nothing
+        fb, model = read_cnfg_info(fname, LFT)
+    else
+        fb, model = read_cnfg_info(fname, LFT, modul = modul)
+    end
 
     if n > 0
         n < nc || error("Number of configurations to read, $n, is bigger that
