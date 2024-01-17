@@ -66,10 +66,10 @@ function leapfrog!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
 	# First half-step for momenta
     update_momenta!(lftws, epsilon/2.0, hmcws)
 
-    # ns = round(Int64, rand(Distributions.Exponential(nns)))
+    ns = round(Int64, rand(Distributions.Exponential(nns)))
     # ns = rand(1:nns)
-    ns = nns
-
+    # ns = nns
+    
 	# ns-1 steps
 	for i in 1:(ns-1) 
 		# Update fields
@@ -89,7 +89,7 @@ end
 
 
 
-function OMF4!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, ns)
+function OMF4!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
 
     r1::Float64 =  0.08398315262876693
     r2::Float64 =  0.2539785108410595
@@ -97,6 +97,10 @@ function OMF4!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, ns)
     r4::Float64 = -0.03230286765269967
     r5::Float64 =  0.5-r1-r3
     r6::Float64 =  1.0-2.0*(r2+r4)
+
+    ns = round(Int64, rand(Distributions.Exponential(nns)))
+    # ns = rand(1:nns)
+    # ns = nns
 
     for i in 1:ns
         # STEP 1
