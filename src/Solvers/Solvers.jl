@@ -88,6 +88,9 @@ function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
 end
 
 
+# Check convergence i.e. D^-1 D eta = eta
+# Maybe the number of iterations to reach same precision as CG should also be
+# the same?
 function bicgstab!(so, A::Function, si, solver::BiCGSTAB, lftws::AbstractLFT)
     r  = solver.r
     r_hat = solver.r_hat

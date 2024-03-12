@@ -66,9 +66,12 @@ function leapfrog!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
 	# First half-step for momenta
     update_momenta!(lftws, epsilon/2.0, hmcws)
 
-    ns = round(Int64, rand(Distributions.Exponential(nns)))
+    # ns = round(Int64, rand(Distributions.Exponential(nns)))
     # ns = rand(1:nns)
-    # ns = nns
+    ns = nns 
+    if ns == nns
+        @debug "Number of steps is not exponentially distributed"
+    end
     
 	# ns-1 steps
 	for i in 1:(ns-1) 
@@ -101,6 +104,9 @@ function OMF4!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
     ns = round(Int64, rand(Distributions.Exponential(nns)))
     # ns = rand(1:nns)
     # ns = nns
+    if ns == nns
+        @debug "Number of steps is not exponentially distributed"
+    end
 
     for i in 1:ns
         # STEP 1
