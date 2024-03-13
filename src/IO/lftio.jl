@@ -150,3 +150,6 @@ function count_configs(fname::String)
     BDIO.BDIO_close!(fb)
     return cont
 end
+
+import Base: close
+Base.close(fb::BDIO.BDIOstream) = BDIO.BDIO_close!(fb)
