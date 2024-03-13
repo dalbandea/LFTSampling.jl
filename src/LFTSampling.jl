@@ -21,6 +21,7 @@ include("IO/lftio.jl")
 export read_next_cnfg, save_cnfg, save_cnfg_header, save_ensemble, read_ensemble, read_cnfg_info
 
 include("Measurements/measurements.jl")
+export AbstractObservable, AbstractScalar, AbstractCorrelator
 export measure!, save!, write, read
 
 end # module
