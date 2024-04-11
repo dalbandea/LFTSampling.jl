@@ -101,9 +101,9 @@ function OMF4!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
     r5::Float64 =  0.5-r1-r3
     r6::Float64 =  1.0-2.0*(r2+r4)
 
-    ns = round(Int64, rand(Distributions.Exponential(nns)))
+    # ns = round(Int64, rand(Distributions.Exponential(nns)))
     # ns = rand(1:nns)
-    # ns = nns
+    ns = nns
     if ns == nns
         @debug "Number of steps is not exponentially distributed"
     end
