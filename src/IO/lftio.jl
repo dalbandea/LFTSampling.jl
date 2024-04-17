@@ -151,5 +151,21 @@ function count_configs(fname::String)
     return cont
 end
 
+
+# Reads the configuration number n in bdio file
+function read_cnfg_n(fb::BDIO.BDIOstream, n::Int64, lftws::AbstractLFT)
+    cont = 0
+    while BDIO.BDIO_seek!(fb) && cont < n - 1
+        if BDIO.BDIO_get_uinfo(fb) == 8
+            cont += 1
+        end
+    end
+    while BDIO.BDIO_get_uinfo(fb) != 8
+        BDIO.BDIO_seek!(fb)
+    end
+    BDIO.BDIO_read(fb, lftws)
+    BDIO.BDIO_seek!(fb)
+end
+
 import Base: close
 Base.close(fb::BDIO.BDIOstream) = BDIO.BDIO_close!(fb)
