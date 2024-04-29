@@ -52,7 +52,7 @@ function write(obs::AbstractCorrelator)
 end
 
 function save!(obs::AbstractCorrelator)
-    push!(obs.history, obs.result)
+    push!(obs.history, copy(obs.result))
     return nothing
 end
 
