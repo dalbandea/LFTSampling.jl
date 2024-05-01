@@ -56,8 +56,9 @@ function save!(obs::AbstractCorrelator)
     return nothing
 end
 
-function read(::Type{T}, filepath::String) where T <: AbstractCorrelator
-    return DelimitedFiles.readdlm(filepath, ',', Float64)
+function read(::Type{T}, filepath::String; burnout = 0) where T <: AbstractCorrelator
+    corr = DelimitedFiles.readdlm(filepath, ',', Float64)[burnout+1:end, :]
+    return corr, size(corr)[1], size(corr)[2]
 end
 
 
