@@ -151,8 +151,12 @@ function count_configs(fname::String)
     return cont
 end
 
+"""
+    read_cnfg_n(fb::BDIO.BDIOstream, n::Int64, lftws::AbstractLFT)
 
-# Reads the configuration number n in bdio file
+Reads the configuration number `n` in bdio file, if handle `fb` is at the
+beginning of the file, and reads it into `lftws` workspace.
+"""
 function read_cnfg_n(fb::BDIO.BDIOstream, n::Int64, lftws::AbstractLFT)
     cont = 0
     while BDIO.BDIO_seek!(fb) && cont < n - 1
