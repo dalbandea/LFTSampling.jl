@@ -42,6 +42,8 @@ end
 invert!(so, A::Function, si, solver::CG, lftws::AbstractLFT) = cg!(so, A, si, solver, lftws)
 invert!(so, A::Function, si, solver::BiCGSTAB, lftws::AbstractLFT) = bicgstab!(so, A, si, solver, lftws)
 
+stopping_criterium(resnorm, r, tol) = resnorm < tol
+export stopping_criterium
 
 function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
 
@@ -55,6 +57,9 @@ function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
     p  .= si
     norm = mapreduce(x -> abs2(x), +, si)
     err = zero(lftws.PRC)
+
+    rtol = real(solver.tol * sqrt(norm))
+    # println(rtol)
     
 	    # println( tol)
 	    iterations = 0
@@ -68,8 +73,9 @@ function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
 
         err = mapreduce(x -> abs2(x), +, r)
         
-        if err < solver.tol
+        if stopping_criterium(sqrt(err), r, rtol)
 		iterations=i
+        # println(sqrt(err))
             break
         end
 
@@ -79,8 +85,8 @@ function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
         norm = err;
     end
 
-    if err > solver.tol
-	    println(err)
+    if !stopping_criterium(sqrt(err), r, rtol)
+	    # println(err)
         error("CG not converged after $(solver.maxiter) iterationss")
     end
     
