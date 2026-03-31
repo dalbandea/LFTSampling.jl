@@ -67,6 +67,21 @@ sample!(lftws::AbstractLFT, samplerws::AbstractHMC) = hmc!(lftws, samplerws)
 
 
 
+#########
+#  SMD  #
+#########
+
+include("SMD/smdtypes.jl")
+export AbstractSMD, SMDParams, SMD
+
+include("SMD/smd.jl")
+export smd!, refresh_momenta!
+
+sampler(lftws::AbstractLFT, smdp::SMDParams) = FallbackSMD(smdp)
+sample!(lftws::AbstractLFT, smdws::AbstractSMD) = smd!(lftws, smdws)
+
+
+
 ##############
 # Metropolis #
 ##############

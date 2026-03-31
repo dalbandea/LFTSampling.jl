@@ -13,11 +13,11 @@ function action(lftws::AbstractLFT)
     return nothing
 end
 action(lftws::AbstractLFT, hmcws::AbstractHMC) = action(lftws)
-function update_momenta!(lftws::AbstractLFT, epsilon, hmcws::AbstractHMC) 
+function update_momenta!(lftws::AbstractLFT, epsilon, samplerws::AbstractSampler)
     error("No function update_momenta! for $(typeof(lftws))")
     return nothing
 end
-function update_fields!(lftws::AbstractLFT, epsilon, hmcws::AbstractHMC) 
+function update_fields!(lftws::AbstractLFT, epsilon, samplerws::AbstractSampler)
     error("No function update_fields! for $(typeof(lftws))")
     return nothing
 end
@@ -61,7 +61,7 @@ function hmc!(lftws::AbstractLFT, hmcws::AbstractHMC)
     return dH
 end
 
-function leapfrog!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
+function leapfrog!(lftws::AbstractLFT, hmcws::AbstractSampler, epsilon, nns)
 
 	# First half-step for momenta
     update_momenta!(lftws, epsilon/2.0, hmcws)
@@ -92,7 +92,7 @@ end
 
 
 
-function OMF4!(lftws::AbstractLFT, hmcws::AbstractHMC, epsilon, nns)
+function OMF4!(lftws::AbstractLFT, hmcws::AbstractSampler, epsilon, nns)
 
     r1::Float64 =  0.08398315262876693
     r2::Float64 =  0.2539785108410595
