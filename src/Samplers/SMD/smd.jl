@@ -10,18 +10,18 @@ end
 molecular_dynamics!(lftws::AbstractLFT, smdws::AbstractSMD) =
     molecular_dynamics!(lftws, smdws, smdws.params.integrator)
 molecular_dynamics!(lftws::AbstractLFT, smdws::AbstractSMD, integr::Leapfrog) =
-    leapfrog!(lftws, smdws, integr.epsilon, integr.nsteps)
+    leapfrog!(lftws, smdws, integr.epsilon, 1)
 molecular_dynamics!(lftws::AbstractLFT, smdws::AbstractSMD, integr::OMF4) =
-    OMF4!(lftws, smdws, integr.epsilon, integr.nsteps)
+    OMF4!(lftws, smdws, integr.epsilon, 1)
 
 function smd!(lftws::AbstractLFT, smdws::AbstractSMD)
     c1 = exp(-smdws.params.gamma * smdws.params.integrator.epsilon)
 
-    # Partial momentum refresh
-    refresh_momenta!(lftws, smdws, c1)
-
     # MD trajectory without accept/reject step
-    molecular_dynamics!(lftws, smdws)
+    for i in 1:smdws.params.integrator.nsteps
+        refresh_momenta!(lftws, smdws, c1)
+        molecular_dynamics!(lftws, smdws)
+    end
 
     return nothing
 end
