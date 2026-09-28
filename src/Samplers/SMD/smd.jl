@@ -6,6 +6,9 @@ function refresh_momenta!(lftws::AbstractLFT, smdws::AbstractSMD, c1::Float64)
     error("No function refresh_momenta! for $(typeof(lftws))")
     return nothing
 end
+# Action used for dH; models whose action needs the sampler workspace (e.g.
+# pseudofermions) specialize it, as action(lftws, hmcws) for HMC
+action(lftws::AbstractLFT, smdws::AbstractSMD) = action(lftws)
 # Kinetic energy of the momenta; only needed with compute_dH = true
 function kinetic_energy(lftws::AbstractLFT, smdws::AbstractSMD)
     error("No function kinetic_energy for $(typeof(lftws))")
@@ -36,13 +39,13 @@ function smd!(lftws::AbstractLFT, smdws::AbstractSMD)
     # momentum rotations change H too, but they are not integration errors and are
     # left out. They do not change the field, so the action at the end of a step is
     # the one at the start of the next.
-    S  = action(lftws)
+    S  = action(lftws, smdws)
     dH = zero(S)
     for i in 1:smdws.params.integrator.nsteps
         refresh_momenta!(lftws, smdws, c1)
         K = kinetic_energy(lftws, smdws)
         molecular_dynamics!(lftws, smdws)
-        Snew = action(lftws)
+        Snew = action(lftws, smdws)
         dH  += (kinetic_energy(lftws, smdws) - K) + (Snew - S)
         S    = Snew
     end
