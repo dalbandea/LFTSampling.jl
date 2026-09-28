@@ -57,6 +57,8 @@ function cg!(so, A::Function, si, solver::CG, lftws::AbstractLFT)
     p  .= si
     norm = mapreduce(x -> abs2(x), +, si)
     err = zero(lftws.PRC)
+    # si = 0 has the solution 0; the relative criterion below (resnorm < 0) would never hold
+    iszero(norm) && return 0
 
     rtol = real(solver.tol * sqrt(norm))
     # println(rtol)
